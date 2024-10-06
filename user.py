@@ -13,7 +13,7 @@ class User:
         self.cash = STARTING_CASH
         self.conn = db_interface.open_conn()
 
-    def query(self, ticker): 
+    def get_price(self, ticker): 
         info = yf.Ticker(ticker).info
         return info['currentPrice'], info['financialCurrency']
 

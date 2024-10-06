@@ -11,7 +11,7 @@ def run():
         command = input("Enter command ('help' for usage): ").split()
             
         if command[0] == 'query':
-            price, curr = user.query(command[1])
+            price, curr = user.get_price(command[1])
             print(
                 'Current price of ticker {}: ${} {}'.format(
                     command[1].upper(), 
@@ -48,3 +48,6 @@ def run():
 
         if command[0] == 'quit':
             break
+
+if __name__ == "__main__":
+    cli.run()
