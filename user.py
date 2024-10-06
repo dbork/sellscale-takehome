@@ -37,7 +37,41 @@ class User:
         self.cash -= cost
 
     def sell(self, ticker, amount):
-        raise NotImplementedError()
+
+        price, curr = self.query(ticker)
+        price_usd = helper.to_usd(price, curr)
+        revenue = price_usd * amount
+
+        # Throw an error if the user doesn't own enough of this stock
+        row = db_interface.get(self.conn, self.user_id, ticker)
+        if row:
+            new_amount = row[0][2] - amount
+            if new_amount < 0:
+                raise Exception(
+                    'You do not own enough of this stock for this transaction'
+                )
+
+            if new_amount == 0:
+                db_interface.delete(
+                    self.conn, 
+                    self.user_id, 
+                    ticker
+                )
+
+            else:
+                db_interface.update(
+                    self.conn, 
+                    self.user_id, 
+                    ticker, 
+                    new_amount
+                )
+
+        else:
+            raise Exception(
+                'You do not own enough of this stock for this transaction'
+            )
+
+        self.cash += revenue
 
     def view_portfolio(self):
         return db_interface.get_all(self.conn, self.user_id)
