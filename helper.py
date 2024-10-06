@@ -5,3 +5,5 @@ def to_usd(price, curr):
         raise NotImplementedError(
             'Support for non-USD currencies not yet implemented.'
         )
+
+    return price

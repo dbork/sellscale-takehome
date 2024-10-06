@@ -1,40 +1,17 @@
-import yfinance as yf
+from user import User
 
-import db_interface
-import helper
-
-# TODO: should all be in a user class with auth, probably
-STARTING_CASH = 100000
 USER_ID = 0
-STOCKS_CONN = db_interface.open_conn()
 
-conn = db_interface.open_conn()
-try:
-    db_interface.init_db(conn)
-except:
-    pass
-
-def query(ticker): 
-    info = yf.Ticker(ticker).info
-    return info['currentPrice'], info['financialCurrency']
-
-def buy(ticker, amt):
-    pass
-
-def sell(ticker, amt):
-    pass
-
-def view_portfolio():
-    pass
-
-# CLI implementation
+# CLI implementation for debugging
 if __name__ == "__main__":
+    user = User(USER_ID)
 
     while True:
+        print('Cash on hand: ${:.2f} USD'.format(user.cash))
         command = input("Enter command ('help' for usage): ").split()
             
         if command[0] == 'query':
-            price, curr = query(command[1])
+            price, curr = user.query(command[1])
             print(
                 'Current price of ticker {}: ${} {}'.format(
                     command[1].upper(), 
@@ -44,19 +21,26 @@ if __name__ == "__main__":
             )
 
         if command[0] == 'buy':
-            buy(command[1], command[2])
+            user.buy(command[1], int(command[2]))
 
         if command[0] == 'sell':
-            sell(command[1], command[2])
+            user.sell(command[1], int(command[2]))
 
         if command[0] == 'view':
-            view_portfolio()
+            for line in user.view_portfolio():
+                print(
+                    '{} stock{} of {}'.format(
+                        line[2], 
+                        's' if line[2] == 1 else 's',
+                        line[1].upper()
+                    )
+                )
 
         if command[0] == 'help':
             print('''Usage:
                 'query ticker': query a stock ticker
-                'buy ticker amt': buy an amount of a stock
-                'sell ticker amt': sell an amount of a stock
+                'buy ticker amount': buy an amount of a stock
+                'sell ticker amount': sell an amount of a stock
                 'view': view portfolio 
                 'quit': quit
                 'help': print this message'''

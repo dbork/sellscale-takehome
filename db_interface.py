@@ -15,6 +15,12 @@ def init_db(conn):
 # Connect to the database, returning conn object
 def open_conn():
     conn = sqlite3.connect('db/stocks.db')
+
+    try:
+        init_db(conn)
+    except:
+        pass
+
     return conn
 
 # Close connection to the database
@@ -26,9 +32,11 @@ def insert(conn, user_id, ticker, amount):
     query = 'INSERT INTO stocks ({}) VALUES ({});'.format(
         'user_id, ticker, amount', 
         ', '.join(
-            user_id,
-            ticker,
-            amount
+            [
+                str(user_id),
+                "'{}'".format(ticker),
+                str(amount)
+            ]
         )
     )
 
@@ -43,19 +51,41 @@ def insert(conn, user_id, ticker, amount):
     conn.commit()
 
 # Update row in the database
-def update(conn):
+def update(conn, user_id, ticker, amount):
+    query = '''
+        UPDATE stocks 
+        SET amount = {} 
+        WHERE user_id = {} AND ticker = '{}'
+    '''.format(amount, user_id, ticker)
+    cursor = conn.cursor()
+    cursor.execute(query)
     conn.commit()
-    pass
 
 # Delete row from the database
-def delete(conn):
+def delete(conn, user_id, ticker):
+    query = '''
+        DELETE FROM stocks 
+        WHERE user_id = {} AND ticker = '{}'
+    '''.format(user_id, ticker)
+    cursor = conn.cursor()
+    cursor.execute(query)
     conn.commit()
-    pass
 
 # Get stocks with given ticker owned by a user
 def get(conn, user_id, ticker):
-    pass
+    query = '''
+        SELECT * FROM stocks WHERE user_id = {} AND ticker = '{}'
+    '''.format(
+        user_id,
+        ticker
+    )
+    return conn.execute(query).fetchall()
 
 # Get all stocks owned by a user
 def get_all(conn, user_id):
-    pass
+    query = '''
+        SELECT * FROM stocks WHERE user_id = {}
+    '''.format(
+        user_id
+    )
+    return conn.execute(query).fetchall()
