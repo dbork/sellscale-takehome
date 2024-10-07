@@ -7,6 +7,11 @@ def init_db(conn):
             user_id INT,
             ticker TEXT,
             amount INT
+        );
+        CREATE TABLE users (
+            user_id INT,
+            username TEXT,
+            cash FLOAT
         )
    '''
    conn.execute(query)
@@ -14,7 +19,7 @@ def init_db(conn):
 
 # Connect to the database, returning conn object
 def open_conn():
-    conn = sqlite3.connect('db/stocks.db')
+    conn = sqlite3.connect('db/sellscalehood.db')
 
     try:
         init_db(conn)
@@ -27,8 +32,8 @@ def open_conn():
 def close_conn(conn):
     conn.close()
 
-# Insert row into the database
-def insert(conn, user_id, ticker, amount):
+# Insert row into the stocks table
+def insert_stocks(conn, user_id, ticker, amount):
     query = 'INSERT INTO stocks ({}) VALUES ({});'.format(
         'user_id, ticker, amount', 
         ', '.join(
@@ -50,19 +55,22 @@ def insert(conn, user_id, ticker, amount):
     # premature termination of a session
     conn.commit()
 
-# Update row in the database
-def update(conn, user_id, ticker, amount):
-    query = '''
-        UPDATE stocks 
-        SET amount = {} 
-        WHERE user_id = {} AND ticker = '{}'
-    '''.format(amount, user_id, ticker)
-    cursor = conn.cursor()
-    cursor.execute(query)
-    conn.commit()
+# Update row in the stocks table
+def update_stocks(conn, user_id, ticker, amount):
+    if amount == 0:
+        delete_stocks(conn, user_id, ticker)
+    else:
+        query = '''
+            UPDATE stocks 
+            SET amount = {} 
+            WHERE user_id = {} AND ticker = '{}'
+        '''.format(amount, user_id, ticker)
+        cursor = conn.cursor()
+        cursor.execute(query)
+        conn.commit()
 
-# Delete row from the database
-def delete(conn, user_id, ticker):
+# Delete row from the stocks table
+def delete_stocks(conn, user_id, ticker):
     query = '''
         DELETE FROM stocks 
         WHERE user_id = {} AND ticker = '{}'
@@ -72,7 +80,7 @@ def delete(conn, user_id, ticker):
     conn.commit()
 
 # Get stocks with given ticker owned by a user
-def get(conn, user_id, ticker):
+def get_stocks(conn, user_id, ticker):
     query = '''
         SELECT * FROM stocks WHERE user_id = {} AND ticker = '{}'
     '''.format(
@@ -82,10 +90,53 @@ def get(conn, user_id, ticker):
     return conn.execute(query).fetchall()
 
 # Get all stocks owned by a user
-def get_all(conn, user_id):
+def get_all_stocks(conn, user_id):
     query = '''
         SELECT * FROM stocks WHERE user_id = {}
     '''.format(
         user_id
     )
+    return conn.execute(query).fetchall()
+
+# Create a new user in the user table
+def insert_user(conn, user_id, username, cash):
+    query = 'INSERT INTO stocks ({}) VALUES ({});'.format(
+        'user_id, username, cash', 
+        ', '.join(
+            [
+                str(user_id),
+                username
+                str(cash)
+            ]
+        )
+    )
+    cursor = conn.cursor()
+    cursor.execute(query)
+    conn.commit()
+
+# Update the cash owned by an existing user
+def update_user(conn, user_id, cash):
+    query = '''
+        UPDATE users 
+        SET cash = {} 
+        WHERE user_id = {}
+    '''.format(cash, user_id)
+    cursor = conn.cursor()
+    cursor.execute(query)
+    conn.commit()
+
+# Get user with given username
+def get_user(conn, username):
+    query = '''
+        SELECT * FROM users WHERE username = {}
+    '''.format(
+        username
+    )
+    return conn.execute(query).fetchall()
+
+# Get all users
+def get_all_users(conn, username):
+    query = '''
+        SELECT * FROM users
+    '''
     return conn.execute(query).fetchall()
