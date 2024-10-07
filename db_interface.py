@@ -2,19 +2,22 @@ import sqlite3
 
 # Spin up databases if they don't exist
 def init_db(conn):
-   query = '''
+   create_stocks = '''
         CREATE TABLE stocks (
             user_id INT,
             ticker TEXT,
             amount INT
         );
+   '''
+   create_users = '''
         CREATE TABLE users (
             user_id INT,
             username TEXT,
             cash FLOAT
         )
    '''
-   conn.execute(query)
+   conn.execute(create_stocks)
+   conn.execute(create_users)
    conn.commit()
 
 # Connect to the database, returning conn object
@@ -100,12 +103,12 @@ def get_all_stocks(conn, user_id):
 
 # Create a new user in the user table
 def insert_user(conn, user_id, username, cash):
-    query = 'INSERT INTO stocks ({}) VALUES ({});'.format(
+    query = 'INSERT INTO users ({}) VALUES ({});'.format(
         'user_id, username, cash', 
         ', '.join(
             [
                 str(user_id),
-                username
+                "'{}'".format(username),
                 str(cash)
             ]
         )
@@ -128,14 +131,14 @@ def update_user(conn, user_id, cash):
 # Get user with given username
 def get_user(conn, username):
     query = '''
-        SELECT * FROM users WHERE username = {}
+        SELECT * FROM users WHERE username = '{}'
     '''.format(
         username
     )
     return conn.execute(query).fetchall()
 
 # Get all users
-def get_all_users(conn, username):
+def get_all_users(conn):
     query = '''
         SELECT * FROM users
     '''

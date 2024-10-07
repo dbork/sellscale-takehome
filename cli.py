@@ -1,10 +1,9 @@
 from user import User
 
-USER_ID = 0
-
 # CLI implementation for debugging
 def run():
-    user = User(USER_ID)
+    username = input('Username? ')
+    user = User(username)
 
     while True:
         print('Cash on hand: ${:.2f} USD'.format(user.cash))
@@ -50,4 +49,4 @@ def run():
             break
 
 if __name__ == "__main__":
-    cli.run()
+    run()

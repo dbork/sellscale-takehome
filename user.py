@@ -3,7 +3,7 @@ import yfinance as yf
 import db_interface
 import helper
 
-STARTING_CASH = 100000
+DEFAULT_CASH = 1000
 
 class User:
     def __init__(self, username):
@@ -11,13 +11,13 @@ class User:
 
         # Look for an existing user in the db
         existing_user = db_interface.get_user(self.conn, username)
-        if row:
-            self.user_id = row[0]
-            self.cash = row[2]
+        if existing_user:
+            self.user_id = existing_user[0][0]
+            self.cash = existing_user[0][2]
 
         # If not found, create a new user with default starting cash
         else:
-            self.user_id = len(db_interface.get_all_users())
+            self.user_id = len(db_interface.get_all_users(self.conn))
             db_interface.insert_user(
                 self.conn, 
                 self.user_id, 
@@ -33,7 +33,7 @@ class User:
 
     def buy(self, ticker, amount):
         # Sanity check to make sure the user can afford this
-        price, curr = self.query(ticker)
+        price, curr = self.get_price(ticker)
         price_usd = helper.to_usd(price, curr)
         cost = price_usd * amount
         if cost > self.cash:
@@ -59,10 +59,10 @@ class User:
             )
 
         self.cash -= cost
+        db_interface.update_user(self.conn, self.user_id, self.cash)
 
     def sell(self, ticker, amount):
-
-        price, curr = self.query(ticker)
+        price, curr = self.get_price(ticker)
         price_usd = helper.to_usd(price, curr)
         revenue = price_usd * amount
 
@@ -88,6 +88,7 @@ class User:
             )
 
         self.cash += revenue
+        db_interface.update_user(self.conn, self.user_id, self.cash)
 
     def view_portfolio(self):
         return db_interface.get_all_stocks(self.conn, self.user_id)
