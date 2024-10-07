@@ -6,10 +6,6 @@ from user import User
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
-
 @app.route('/get_price/<ticker>', methods=['GET'])
 def get_price(ticker):
     data = User(session['user_id']).get_price(ticker)
