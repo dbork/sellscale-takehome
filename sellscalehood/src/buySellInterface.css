@@ -1,0 +1,46 @@
+.logged-in {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.cash-text {
+    color: black;
+}
+
+.portfolio-text {
+    color: #AAFF00;
+}
+
+.horiz-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.vert-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.black-box {
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    padding: 10px;
+    border-radius: 12px;
+}
+
+.ticker-input {
+    background-color: black;
+    color: white;
+}

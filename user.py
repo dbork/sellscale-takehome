@@ -31,6 +31,9 @@ class User:
         info = yf.Ticker(ticker).info
         return info['currentPrice'], info['financialCurrency']
 
+    def get_cash(self): 
+        return self.cash
+
     def buy(self, ticker, amount):
         # Sanity check to make sure the user can afford this
         price, curr = self.get_price(ticker)

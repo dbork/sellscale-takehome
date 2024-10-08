@@ -1,11 +1,19 @@
 import { useState } from 'react';
 
+import LoggedIn from './loggedIn.js'
 import './App.css';
 
 function App() {
     const [isLoggedIn, setLoggedIn] = useState(false);
+    const [username, setUsername] = useState('');
 
     function handleLogin(e) {
+        fetch(
+            `http://127.0.0.1:5000/login/${username}`, {
+                method: 'GET',
+                credentials: 'include'
+            }
+        )
         setLoggedIn(true);
     }
 
@@ -15,14 +23,16 @@ function App() {
                 <p>
                     SellScaleHood
                 </p>
-                <div className="white-box">
+                <div className="box">
                     { 
                         isLoggedIn ? 
-                        'login' : 
+                        <LoggedIn username={username}/> : 
                         <form onSubmit={handleLogin}>
                             <div className="login-flex">
-                                Please enter your username.
-                                <input className="login-input" name='firstName'/>
+                                please enter your username
+                                <input className="login-input" onChange={
+                                    e => setUsername(e.target.value)
+                                }/>
                             </div>
                         </form>
                     }
