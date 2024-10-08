@@ -7,15 +7,21 @@ To run SellScaleHood, you will need installations of the following:
 - Node >= 14
 - flask
 
-You will also need two open terminal windows. Run the following commands in
-the first terminal window from the top-level directory:
+First, you will need to set up a Python virtual environment. From the top-level
+directory, run
 
+$ python3 -m venv venv
 $ source venv/bin/activate
-$ npm start
+$ pip install -r requirements.txt
 
-This will activate the virtual environment in which the required Python 
-packages are installed, and will launch the Flask development server on 
-127.0.0.1:5000. Then, in a second terminal window, run
+This will install the required Python packages and activate the resulting
+virtual environment. Next, run
+
+$ flask run
+
+to launch the Flask development server on 127.0.0.1:5000. 
+
+Then, in a second terminal window, run
 
 $ cd sellscalehood
 $ npm start
