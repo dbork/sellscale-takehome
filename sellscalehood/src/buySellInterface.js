@@ -23,11 +23,11 @@ function BuySellInterface({username, ticker, price, curr}) {
     }
 
     return (
-        <div>
+        <div className='price-text'>
             {`price of ${ticker}: $${price} ${curr}`}
-            <div className='horiz-flex'>
-                <button type="button" onClick={handleBuy}>+</button>
-                <button type="button" onClick={handleSell}>-</button>
+            <div className='button-flex'>
+                <button type="button" className='button' onClick={handleBuy}>+</button>
+                <button type="button" className='button' onClick={handleSell}>-</button>
             </div>
         </div>
     )

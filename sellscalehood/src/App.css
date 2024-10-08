@@ -9,7 +9,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: calc(10px + 2vmin);
+    font-family: "Courier New";
+    font-size: 64px;
     color: #AAFF00;
 }
 
@@ -20,8 +21,9 @@
     align-items: center;
     justify-content: center;
     color: black;
-    padding: 10px;
+    padding: 20px;
     border-radius: 12px;
+    min-width: 700px;
 }
 
 .login-flex {
@@ -30,9 +32,11 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    font-size: 24px;
 }
 
 .login-input {
     background: black;
     color: white;
+    font-size: 18px;
 }

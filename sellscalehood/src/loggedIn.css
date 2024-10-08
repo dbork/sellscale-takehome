@@ -2,23 +2,44 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    min-height: 400px;
+    gap: 40px;
 }
 
 .cash-text {
     color: black;
+    font-size: 24px;
+}
+
+.ticker-text {
+    color: black;
+    font-size: 18px;
+}
+
+.portfolio-header {
+    color: #AAFF00;
+    font-size: 24px;
+    margin-bottom: 10px;
 }
 
 .portfolio-text {
     color: #AAFF00;
+    font-size: 18px;
+}
+
+.form {
+    display: flex;
+}
+
+.ticker-input {
+    font-size: 18px;
 }
 
 .horiz-flex {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
+    gap: 40px;
 }
 
 .vert-flex {
@@ -26,7 +47,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 20px;
+    min-width: 300px;
 }
 
 .black-box {
@@ -34,10 +56,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     color: black;
-    padding: 10px;
+    padding: 20px;
     border-radius: 12px;
+    min-width: 250px;
+    min-height: 260px;
 }
 
 .ticker-input {

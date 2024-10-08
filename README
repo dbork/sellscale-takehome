@@ -1,3 +1,25 @@
- Setup
+Setup
 
- First, install the following:
+To run SellScaleHood, you will need installations of the following:
+
+- python3
+- npm
+- Node >= 14
+- flask
+
+You will also need two open terminal windows. Run the following commands in
+the first terminal window from the top-level directory:
+
+$ source venv/bin/activate
+$ npm start
+
+This will activate the virtual environment in which the required Python 
+packages are installed, and will launch the Flask development server on 
+127.0.0.1:5000. Then, in a second terminal window, run
+
+$ cd sellscalehood
+$ npm start
+
+to run the React frontend at 127.0.0.1:3000. This will also open a tab in
+your default Web browser, from which SellScaleHood can be used.
+
